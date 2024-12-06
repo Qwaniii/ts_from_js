@@ -1,0 +1,24 @@
+###
+# Авторизация
+
+POST http://query.rest/api/v1/users/sign
+Content-Type: application/json
+
+{
+  "login": "test_1",
+  "password": "123456"
+}
+
+###
+# Выход - отмена авториазции для удаления токена
+
+DELETE http://query.rest/api/v1/users/sign
+X-Token: 0800a69a1a04cef7e70e4a69f22d5b9f029df447f5306a095278da5a51f14171
+Content-Type: application/json
+
+###
+# Свой профиль
+
+GET http://query.rest/api/v1/users/self?fields=*
+X-Token: 7ee15209d8429544dea8123fbdae254f5f79e6da5d720fec3127d9385b6eb9bc
+Content-Type: application/json

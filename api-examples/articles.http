@@ -1,0 +1,28 @@
+###
+# Список товаров
+
+GET http://query.rest/api/v1/articles
+
+###
+# Список с пагинацией
+
+GET http://query.rest/api/v1/articles?limit=10&skip=20
+
+###
+# Список с пагинацией и возвратом общего количества (и только нужных свойств через fields)
+# Про формат fields смотри http://query.rest
+
+GET http://query.rest/api/v1/articles?limit=10&skip=10&
+  fields=items(_id, title, price),count
+
+###
+# Товар по id
+
+GET http://query.rest/api/v1/articles/65f8322cf3360f03347a6be8
+
+###
+# Товар по id с подробностями о стране и категории
+# Про формат fields смотри http://query.rest
+
+GET http://query.rest/api/v1/articles/65f8322cf3360f03347a6be8?
+  fields=*,madeIn(title,code),category(title)

@@ -1,0 +1,28 @@
+# Комментрии к товару
+
+GET http://query.rest/api/v1/comments?fields=items(_id,text,dateCreate,author(profile(name)),parent(_id,_type),isDeleted),count&limit=*&search[parent]=670260bb7dd498df5525e5ed
+
+# Остальные методы в http://query.rest/api/v1/docs/ (http://localhost:8010/api/v1/docs/)
+
+###
+# Создание первого коммента
+POST http://query.rest/api/v1/comments
+Content-Type: application/json
+X-Token: 7ee15209d8429544dea8123fbdae254f5f79e6da5d720fec3127d9385b6eb9bc
+
+{
+  "text": "Первый коммент!",
+  "parent": {"_id":  "670260bb7dd498df5525e5ed", "_type":  "article"}
+}
+
+
+###
+# Создание ответа на коммент коммента
+POST http://query.rest/api/v1/comments
+Content-Type: application/json
+X-Token: 7ee15209d8429544dea8123fbdae254f5f79e6da5d720fec3127d9385b6eb9bc
+
+{
+  "text": "Первый ответ на коммент!",
+  "parent": {"_id":  "670429839c74519426f378bd", "_type":  "comment"}
+}
