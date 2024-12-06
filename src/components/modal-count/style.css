@@ -1,0 +1,79 @@
+.ModalCount-inputWrapper{
+  display: flex;
+  justify-content: center;
+  gap:10px;
+}
+.ModalCount-input{
+  width: 12%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  text-align: right;
+}
+.ModalCount-input[type="number"] {
+  -moz-appearance: textfield;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.ModalCount-input[type="number"]::-webkit-inner-spin-button,
+.ModalCount-input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.ModalCount-input:focus{
+  border-color: #007bff;
+  outline: none;
+}
+.ModalCount-btns{
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+.ModalCount-btn{
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+.ModalCount-btn.ok {
+  background-color: #28a745; /* Зеленый для ОК */
+  transition: background-color ease-out 0.5s;
+}
+.ModalCount-btn.ok:hover{
+  background-color: #218838;
+}
+.ModalCount-btn.cancel {
+  background-color: #dc3545;
+  transition: background-color ease-out 0.5s;
+}
+.ModalCount-btn.cancel:hover {
+  background-color: #c82333;
+}
+
+.ModalCount-btn-action{
+  background-color: transparent;
+  color: #dc3545;
+  /*border: 1px solid black;*/
+  /*border-radius: 4px;*/
+  /*padding: 10px 20px;*/
+  border: none;
+  margin-bottom: 15px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 36px;
+  transition: color 0.3s ease;
+}
+.ModalCount-btn-action:hover{
+  color: #c82333;
+
+}
+.ModalCount-btn-action:disabled{
+  color: #535353;
+}

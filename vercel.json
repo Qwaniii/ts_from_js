@@ -1,0 +1,16 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "http://query.rest/api/:path*"
+    },
+    {
+      "source": "/api/:path*/",
+      "destination": "http://query.rest/api/:path*/"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
