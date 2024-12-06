@@ -3,11 +3,12 @@ import './style.css';
 
 type ControlsProps = {
   onAdd: () => void
+  title: string
 }
-function Controls({ onAdd}: ControlsProps) {
+function Controls({ onAdd, title = "Добавить"}: ControlsProps) {
   return (
     <div className="Controls">
-      <button onClick={() => onAdd()}>Добавить</button>
+      <button onClick={() => onAdd()}>{title}</button>
     </div>
   );
 }

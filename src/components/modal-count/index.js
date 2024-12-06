@@ -43,8 +43,7 @@ function ModalCount ({close}){
       onClose={callbacks.closeModal}
     >
       <div className={cn('inputWrapper')}>
-        <button className={cn('btn-action')} onClick={callbacks.handelMinus} disabled={+inputValue <=1}>-</button>
-        <input
+        {/* <input
           className={cn('input')}
           readOnly
           type={'number'}
@@ -53,13 +52,14 @@ function ModalCount ({close}){
           value={inputValue}
           onChange={callbacks.handleChange}
           placeholder="Введите число"
-        />
-        <button className={cn('btn-action')} onClick={callbacks.handelPlus} disabled={+inputValue >10} >+</button>
+        /> */}
+        <input className={cn("input")} min={1} max={1000} type="number" value={inputValue} onChange={callbacks.handleChange}></input>
       </div>
-      <div className={cn('btns', 'ok')}>
-        <button className={cn('btn', 'ok')} onClick={callbacks.handleOk}>OK</button>
-        <button className={cn('btn', 'cancel')} onClick={callbacks.closeModal}>{t('modalCount.cancel')}</button>
-      </div>
+      <div className={cn("footer")}>
+          <button disabled={inputValue > 1000 || inputValue < 1 ? "disabled" : ""} className={cn("success")} onClick={callbacks.handleOk}>Ok</button>
+          <button onClick={callbacks.closeModal}>{t('modalCount.cancel')}</button>
+        </div>
+
     </ModalLayout>
   )
 }

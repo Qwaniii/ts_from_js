@@ -7,6 +7,7 @@ import Input from '../../components/input';
 import SideLayout from '../../components/side-layout';
 import treeToList from '../../utils/tree-to-list';
 import listToTree from '../../utils/list-to-tree';
+import SelectCountry from '../../components/select-country';
 
 function CatalogFilter({stateNameCatalog = 'catalog', stateNameCategories = 'categories'}) {
   const store = useStore();
@@ -17,7 +18,9 @@ function CatalogFilter({stateNameCatalog = 'catalog', stateNameCategories = 'cat
     sort: state[stateNameCatalog]?.params?.sort,
     query: state[stateNameCatalog]?.params?.query,
     category: state[stateNameCatalog]?.params?.category,
+    country: state[stateNameCatalog]?.params?.madeIn,
     categories: state[stateNameCategories]?.list || [],
+    countries: state.countries.list || [],
   }});
 
   const callbacks = {
@@ -37,6 +40,15 @@ function CatalogFilter({stateNameCatalog = 'catalog', stateNameCategories = 'cat
       ,
       [store],
     ),
+    onCountry: useCallback(
+      madeIn =>
+        store.actions[stateNameCatalog].setParams({
+          madeIn,
+          page: 1,
+        })
+      ,
+      [store],
+    )
   };
 
   const options = {
@@ -53,7 +65,7 @@ function CatalogFilter({stateNameCatalog = 'catalog', stateNameCategories = 'cat
     // Категории для фильтра
     categories: useMemo(
       () => [
-        {value: '', title: 'Все'},
+        {value: '', title: 'Все категории'},
         ...treeToList(listToTree(select.categories), (item, level) => ({
           value: item._id,
           title: '- '.repeat(level) + item.title,
@@ -61,7 +73,20 @@ function CatalogFilter({stateNameCatalog = 'catalog', stateNameCategories = 'cat
       ],
       [select.categories],
     ),
+    countries: useMemo(
+      () => [
+        {value: '', title: 'Все страны', code: ' '},
+        ...select.countries.map((item) => ({
+          value: item._id,
+          title: item.title,
+          code: item.code
+        })),
+      ],
+      [select.countries],
+    ),
+
   };
+
 
   const {t} = useTranslate();
 
@@ -71,6 +96,11 @@ function CatalogFilter({stateNameCatalog = 'catalog', stateNameCategories = 'cat
         options={options.categories}
         value={select.category}
         onChange={callbacks.onCategory}
+      />
+      <SelectCountry
+        options={options.countries}
+        value={select.country}
+        onChange={callbacks.onCountry}
       />
       <Select options={options.sort} value={select.sort} onChange={callbacks.onSort}/>
       <Input

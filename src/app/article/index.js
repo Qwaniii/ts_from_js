@@ -41,7 +41,7 @@ function Article() {
     // Добавление в корзину
     addToBasket: useCallback(_id => store.actions.basket.addToBasket(_id), [store]),
   };
-console.log('Article select.article', select.article)
+
   return (
     <PageLayout>
       <TopHead />

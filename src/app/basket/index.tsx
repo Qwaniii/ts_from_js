@@ -10,6 +10,7 @@ import ModalLayout from '../../components/modal-layout';
 import BasketTotal from '../../components/basket-total';
 import modalsActions from '../../store-redux/modals/actions';
 import {createPortal} from "react-dom";
+import Controls from '../../components/controls';
 
 function Basket({close}: any) {
   const store = useStore();
@@ -65,7 +66,7 @@ function Basket({close}: any) {
     >
       <List list={select.list} renderItem={renders.itemBasket} />
       <BasketTotal sum={select.sum} t={t} />
-      <button onClick={callbacks.openModalCatalogList}> Выбрать ещё товар </button>
+      <Controls onAdd={callbacks.openModalCatalogList} title={"Выбрать ещё товар"}/>
     </ModalLayout>
   );
 }
