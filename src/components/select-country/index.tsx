@@ -1,5 +1,8 @@
-import { memo } from 'react';
+import { memo, useRef } from 'react';
 import './style.css';
+import { cn as bem } from '@bem-react/classname';
+
+
 type Options = {
   value: string;
   title: string;
@@ -17,20 +20,37 @@ function SelectCountry(props: SelectCountryProps) {
     onChange(e.target.value);
   };
 
+  const main = useRef<HTMLDivElement>(null)
+
+
+  const toggle: () => void = () => {
+    if (main.current?.getAttribute('data-state') === "active") {
+      main.current.setAttribute('data-state', '')
+    } else main.current?.setAttribute('data-state', 'active')
+    
+  }
+
+  const cn = bem('SelectCountry');
+
   return (
     <form >
-      <div className="SelectCountry">
-      <div className="SelectCountry_title" data-default={props.options[0].value}>{props.options[0].title}</div>
-      {props.options.splice(1,).map(item => (
-        <div className='SelectCountry_content'>
-          <input  key={item.value} id={item.value} type="checkbox" name="singleSelect"/>
-          <label htmlFor={item.value}>{item.code}{item.title}</label>
+      <div className={cn()} data-state="" ref={main}>
+      <div className={cn("title")} data-default={props.options[0].value} onClick={toggle}>{props.options[0].title}</div>
+        <div className={cn('wrapper_out')}>
+          <ul>
+          {props.options.splice(1,).map(item => (
+            <li>
+              <input className={cn('input')}  key={item.value} id={item.value} type="checkbox" name="singleSelect"/>
+              <label htmlFor={item.value}><span className={cn('code')}>{item.code}</span>{item.title}</label>
+              <div className={cn('selected')}></div>
+            </li>
+            // <option key={item.value} value={item.value}>
+            //   <div  className='SelectCountry_code'>{item.code}</div>
+            //   {item.title}
+            // </option>
+          ))}
+          </ul>
         </div>
-        // <option key={item.value} value={item.value}>
-        //   <div  className='SelectCountry_code'>{item.code}</div>
-        //   {item.title}
-        // </option>
-      ))}
       </div>
     </form>
   );

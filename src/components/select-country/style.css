@@ -6,7 +6,9 @@
   margin: 0 auto;
 }
 
-.SelectCountry_title {
+
+
+.SelectCountry-title {
   display: flex;
   align-items: center;
   width: 100%;
@@ -17,7 +19,8 @@
   cursor: pointer;
 }
 
-.SelectCountry_title::before, .SelectCountry_title::after {
+
+.SelectCountry-title::before, .SelectCountry-title::after {
   content: "";
 
     position: absolute;
@@ -34,15 +37,89 @@
     transform: translate(-3px, -50%) rotate(45deg);
 }
 
-.SelectCountry_title::after {
+.SelectCountry-title::after {
   transform: translate(3px, -50%) rotate(-45deg);
 }
 
+.SelectCountry[data-state=active] .SelectCountry-title::before  {
+  transform: translate(-3px, -50%) rotate(-45deg);
+}
+
+.SelectCountry[data-state=active] .SelectCountry-title::after  {
+  transform: translate(-3px, -50%) rotate(45deg);
+}
 
 
-.SelectCountry_code {
-  /* color: red;
+.SelectCountry-input {
+  display: none
+}
+
+.SelectCountry-code {
+  padding: 1px 2px;
+  color: red;
   background-color: #6F7EFF;
   width: 18px;
-  height: 18px; */
+  height: 18px;
+}
+
+.SelectCountry-wrapper_out {
+  /* display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 18px;
+  margin-bottom: 5px;
+  line-height: 1.2; */
+  position: absolute;
+  top: 40px;
+  left: 3px;
+
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 6px);
+
+  background-color: #ffffff;
+
+  border: 1px solid #c7ccd1;
+  border-top: none;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  
+  transition: all 0.3s ease-out;
+
+  opacity: 0;
+  z-index: 8;
+}
+
+.SelectCountry-wrapper_out ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: flex-start;
+  font-size: 20px;
+}
+
+ul li {
+  color: gray;
+  display: block;
+  position: relative;
+}
+
+ul li label {
+  display: block;
+  position: relative;
+  font-weight: 500;
+  padding-left: 30px;
+  z-index: 9;
+  cursor: pointer;
+  transition: all .25s linear;
+
+  -webkit-transition: all 0.25s linear;
+}
+
+ul li:hover label {
+  color: #000000;
+  background-color: red;
 }

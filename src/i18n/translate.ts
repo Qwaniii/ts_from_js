@@ -1,12 +1,10 @@
 import * as translations from './translations';
 
 /**
- * Перевод фразу по словарю
+ * Перевод 
  */
 
 export type LangKeys = keyof typeof translations
-
-// type NestedKeys<T> ={ [K: string]: string | NestedKeys<T[typeof K]>;}
 
 type NestedKeys<T> ={
   [K in keyof T]: T[K] extends object
@@ -21,7 +19,9 @@ type NestedKeys<T> ={
 export type TextKey = NestedKeys<typeof translations['ru']> | string & {}
 
 export default function translate(lang:LangKeys, text: TextKey, plural?: number): string {
+
   const keys = text.split('.');
+
   let result: any = translations[lang];
 
   for (const key of keys) {
@@ -41,4 +41,3 @@ export default function translate(lang:LangKeys, text: TextKey, plural?: number)
 
   return typeof result === 'string' ? result : text;
 }
-// const greeting = translate('ru', '')

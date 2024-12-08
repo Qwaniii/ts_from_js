@@ -9,7 +9,6 @@ type useTranslateType ={
 }
 export const I18nContext: React.Context<useTranslateType> = createContext({} as useTranslateType );
 /**
- * Обертка над провайдером контекста, чтобы управлять изменениями в контексте
  * @param children
  * @return {JSX.Element}
  */
