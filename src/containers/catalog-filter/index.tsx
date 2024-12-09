@@ -8,26 +8,44 @@ import SideLayout from '../../components/side-layout';
 import treeToList from '../../utils/tree-to-list';
 import listToTree from '../../utils/list-to-tree';
 import SelectCountry from '../../components/select-country';
+import useInit from '../../hooks/use-init';
+
 
 function CatalogFilter({stateNameCatalog = 'catalog', stateNameCategories = 'categories'}) {
   const store = useStore();
+  
+  useInit(
+    async () => {
+      await store.actions.countries.load()
+    },
+    [],
+    true,
+  );
 
   const select = useSelector((state) => {
-    // console.log('CatalogFilter state', state)
-    return{
-    sort: state[stateNameCatalog]?.params?.sort,
-    query: state[stateNameCatalog]?.params?.query,
-    category: state[stateNameCatalog]?.params?.category,
-    country: state[stateNameCatalog]?.params?.madeIn,
-    categories: state[stateNameCategories]?.list || [],
-    countries: state.countries.list || [],
+    return {
+      sort: state[stateNameCatalog]?.params?.sort,
+      query: state[stateNameCatalog]?.params?.query,
+      category: state[stateNameCatalog]?.params?.category,
+      country: state[stateNameCatalog]?.params?.madeIn,
+      categories: state[stateNameCategories]?.list || [],
+      countries: state.countries.list || [],
   }});
+
+  const [arr , setArr] = useState([])
+
 
   const callbacks = {
     // Сортировка
     onSort: useCallback(sort => store.actions[stateNameCatalog].setParams({sort}), [store]),
     // Поиск
     onSearch: useCallback(query => store.actions[stateNameCatalog].setParams({query, page: 1}), [store]),
+    
+    // onSearchCountry: query => {
+    //   const filterSearch = select.countries.filter(item => item.title.toLowerCase().includes(query.toLowerCase()))
+    //   setArr(filterSearch)
+    // },
+
     // Сброс
     onReset: useCallback(() => store.actions[stateNameCatalog].resetParams(), [store]),
     // Фильтр по категории

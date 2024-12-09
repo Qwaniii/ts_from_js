@@ -49,7 +49,7 @@ class CatalogState extends StoreModule {
    * @param [newParams] {Object} Новые параметры
    * @return {Promise<void>}
    */
-  async initParams(newParams = {}) {
+  async initParams(newParams: object = {}): Promise<void> {
 
     const urlParams = new URLSearchParams(window.location.search);
     let validParams: any = {};

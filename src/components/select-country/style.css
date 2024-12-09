@@ -1,66 +1,77 @@
+
+
+
 .SelectCountry {
   box-sizing: border-box;
   position: relative;
-  max-width: 240px;
-  height: 40px;
-  margin: 0 auto;
+  width: 180px;
+  height: 22px;
+
+  
 }
-
-
 
 .SelectCountry-title {
   display: flex;
   align-items: center;
   width: 100%;
   height: 100%;
-  padding: 2px 5px;
+  /* padding: 2px 0px; */
   border-radius: 1px;
-  border: solid .1px #c7ccd1;
+  border: solid .1px black;
   cursor: pointer;
+  overflow: hidden;
+  padding-left: 2px;
 }
 
 
-.SelectCountry-title::before, .SelectCountry-title::after {
+.SelectCountry-title::before {
   content: "";
 
     position: absolute;
     top: 50%;
     right: 16px;
     display: block;
-    width: 10px;
+    width: 6px;
     height: 2px;
 
     transition: all 0.3s ease-out;
 
     background-color: #333333;
 
-    transform: translate(-3px, -50%) rotate(45deg);
+    transform: translate(-2px, -50%) rotate(45deg);
 }
 
 .SelectCountry-title::after {
-  transform: translate(3px, -50%) rotate(-45deg);
+  content: "";
+
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  display: block;
+  width: 6px;
+  height: 2px;
+
+  transition: all 0.3s ease-out;
+
+  background-color: #333333;
+
+  transform: translate(2px, -50%) rotate(-45deg);
 }
 
 .SelectCountry[data-state=active] .SelectCountry-title::before  {
-  transform: translate(-3px, -50%) rotate(-45deg);
+  transform: translate(-2px, -50%) rotate(-45deg);
 }
 
 .SelectCountry[data-state=active] .SelectCountry-title::after  {
-  transform: translate(-3px, -50%) rotate(45deg);
+  transform: translate(2px, -50%) rotate(45deg);
 }
 
 
 .SelectCountry-input {
-  display: none
+  display: none;
 }
 
-.SelectCountry-code {
-  padding: 1px 2px;
-  color: red;
-  background-color: #6F7EFF;
-  width: 18px;
-  height: 18px;
-}
+
 
 .SelectCountry-wrapper_out {
   /* display: flex;
@@ -70,19 +81,16 @@
   margin-bottom: 5px;
   line-height: 1.2; */
   position: absolute;
-  top: 40px;
-  left: 3px;
+  top: 25px;
+  left: 0px;
 
   display: flex;
   flex-direction: column;
-  width: calc(100% - 6px);
+  width: calc(100% - 1px);
 
   background-color: #ffffff;
+  box-shadow: 0px 1px 10px 1px gray;
 
-  border: 1px solid #c7ccd1;
-  border-top: none;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
   
   transition: all 0.3s ease-out;
 
@@ -91,35 +99,70 @@
 }
 
 .SelectCountry-wrapper_out ul {
+  max-height: 300px;
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 1px;
   align-items: flex-start;
   font-size: 20px;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
-ul li {
-  color: gray;
+.SelectCountry-wrapper_out ul li {
+  width: 100%;
+  color: black;
   display: block;
   position: relative;
 }
 
-ul li label {
+.SelectCountry-wrapper_out ul li label {
   display: block;
   position: relative;
-  font-weight: 500;
-  padding-left: 30px;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 17px;
+  padding: 3px 0px 3px 5px;
   z-index: 9;
   cursor: pointer;
   transition: all .25s linear;
-
   -webkit-transition: all 0.25s linear;
 }
 
-ul li:hover label {
-  color: #000000;
-  background-color: red;
+.SelectCountry-wrapper_out ul li:hover label {
+  background-color: #DBDFFF;
+}
+
+.SelectCountry-code {
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  width: 18px;
+  height: 18px;
+  font-size: 8px;
+  color: white;
+  background-color: #6F7EFF;
+  border-radius: 3px;
+}
+
+.SelectCountry-name {
+  vertical-align: middle;
+  padding-left: 2px;
+}
+
+.SelectCountry-search {
+  border: none;
+  height: 30px;
+  font-style: italic;
+}
+
+.SelectCountry-search:focus {
+
+}
+
+.SelectCountry[data-state=active] .SelectCountry-wrapper_out {
+  opacity: 1;
 }

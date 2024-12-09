@@ -3,10 +3,13 @@ import StoreModule from '../module';
 /**
  * Список стран
  */
+
 type CountriesStateType = {
   list: any;
   waiting: boolean
 }
+
+
 class CountriesState extends StoreModule {
   /**
    * Начальное состояние
@@ -38,6 +41,21 @@ class CountriesState extends StoreModule {
       'Категории загружены',
     );
   }
+
+  search(params) {
+
+    const list = this.getState().list
+
+    const searchCountry = list.filter(item => item.title.toLowerCase().includes(params.toLowerCase()))
+
+
+    this.setState({ 
+      ...this.getState(),
+      list: searchCountry
+    })
+  }
+
+
 }
 
 export default CountriesState;
