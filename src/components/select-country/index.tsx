@@ -14,13 +14,13 @@ type SelectCountryProps = {
   options: any;
   value: string | number;
   onChange: (value: string | number) => void;
+  getCountry: any
 }
 
 function SelectCountry(props: SelectCountryProps) {
   const { onChange = () => {} } = props;
 
  
-
   
   const [value, setValue] = useState("")
   const [arr, setArr] = useState([])
@@ -30,10 +30,10 @@ function SelectCountry(props: SelectCountryProps) {
   const main = useRef<HTMLDivElement>(null)
   const title = useRef<HTMLDivElement>(null)
 
-  const onSelect = (val: string, name: string) => {
-    title.current!.textContent = name
+  const onSelect = (val: string) => {
     onChange(val);
   };
+
 
   useEffect(() => {
     setArr(props.options.slice(1,).filter(item => item.title.toLowerCase().startsWith(debounceValue)))
@@ -49,11 +49,46 @@ function SelectCountry(props: SelectCountryProps) {
   }
 
   // useEffect(() => {
+  //   function handleKeyDown(e) {
+  //     if(e.keyCode === 9) {
+  //       toggle()
+  //     };
+  //   }
+
+  //   document.addEventListener('keydown', handleKeyDown);
+
+  //   return function cleanup() {
+  //     document.removeEventListener('keydown', handleKeyDown);
+  //   }
+  // }, []);
+
+
+  useEffect(() => {
+    function handleKeyDown(e) {
+      if (!main.current || main.current.contains(e.target)) {
+        return;
+      }
+
+      if(e.key === "Tab") {
+        toggle()
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return function cleanup() {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
+
+  // useEffect(() => {
   //   if(debounceValue) {
   //     country = country.filter(item => item.title.toLowerCase().includes(debounceValue))
   //   }
   // }, [debounceValue])
   
+
 
   const cn = bem('SelectCountry');
 
@@ -61,16 +96,17 @@ function SelectCountry(props: SelectCountryProps) {
     <form >
       <div className={cn()} data-state="" ref={main}>
       <div className={cn("title")} ref={title} data-default={props.options[0].value} onClick={toggle}>
-          <span className={cn('code')}>{props.options[0].code}</span>
-          <span className={cn('name')}>{props.options[0].title}</span>
+          <span className={cn('code')}>{props.getCountry?.code ? props.getCountry?.code : props.options[0].code}</span>
+          <span className={cn('name')}>{props.getCountry?.title ? props.getCountry?.title : props.options[0].title}</span>
         </div>
         <div className={cn('wrapper_out')}>
-          <input type='text' className={cn('search')} placeholder='Поиск' onChange={(e) => setValue(e.target.value)}></input>
+          <input type='text' className={cn('search')} placeholder='Поиск' onChange={(e) => setValue(e.target.value)}>
+          </input>
           <ul>
           {country.map(item => (
             <li>
               <input className={cn('input')} key={item.value} id={item.value} type="checkbox" name="singleSelect"/>
-              <label htmlFor={item.value} onClick={() => onSelect(item.value, item.title)}>
+              <label htmlFor={item.value} onClick={() => onSelect(item.value)}>
                 <span className={cn('code')}>{item.code}</span>
                 <span className={cn('name')}>{item.title}</span>
               </label>

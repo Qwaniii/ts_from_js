@@ -102,6 +102,7 @@ function CatalogFilter({stateNameCatalog = 'catalog', stateNameCategories = 'cat
       ],
       [select.countries],
     ),
+    getTitle: select.countries.filter(item => item._id === select.country),
 
   };
 
@@ -119,13 +120,13 @@ function CatalogFilter({stateNameCatalog = 'catalog', stateNameCategories = 'cat
         options={options.countries}
         value={select.country}
         onChange={callbacks.onCountry}
+        getCountry={options.getTitle[0]}
       />
       <Select options={options.sort} value={select.sort} onChange={callbacks.onSort}/>
       <Input
         value={select.query}
         onChange={callbacks.onSearch}
         placeholder={'Поиск'}
-        // delay={1000}
         theme={'big'}
       />
       <button onClick={callbacks.onReset}>{t && t('filter.reset')}</button>
