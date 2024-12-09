@@ -1,24 +1,13 @@
 {
-    "compilerOptions": {
-    "target": "es6",
-    "module": "ES6",
-    "strict": true,                         // Отключает строгую проверку типов, включая 'noImplicitAny'
-    "noImplicitAny": false,                  // Разрешает использование 'any'
-    "allowJs": true,                         // Разрешает компилировать JavaScript файлы
-    "skipLibCheck": true,                    // Ускоряет компиляцию, пропуская проверку типов в файлах деклараций
-    "esModuleInterop": true,                 // Требуется для использования современных import/export
-    "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "Node",
-    "jsx": "react-jsx",
-    "resolveJsonModule": true,
-    "lib": ["DOM", "ES2021"]
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "ES5",
+    "sourceMap": true,
+    "jsx": "react",
+    "esModuleInterop": true,
+    "noEmit":true,
+    "allowImportingTsExtensions":true,
+    "resolveJsonModule":true
   },
-
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
 }
 

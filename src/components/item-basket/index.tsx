@@ -1,4 +1,4 @@
-import {memo, useCallback} from 'react';
+import React, {memo, useCallback} from 'react';
 import {cn as bem} from '@bem-react/classname';
 import propTypes from 'prop-types';
 import numberFormat from '../../utils/number-format';

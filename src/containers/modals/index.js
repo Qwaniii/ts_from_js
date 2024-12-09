@@ -8,31 +8,11 @@ import codeGenerator from "../../utils/code-generator";
 
 function Modals() {
 
-  const store = useStore()
-  const stackModals = useSelector(state => state.modals.stack)
-
-  // const callbacks = {
-  //   closeModalCount: useCallback((count, idModal)=>{
-  //      store.actions.modals.close(idModal, count)
-  //   }, []),
-  //   closeBasket: useCallback((idModal)=>{
-  //     store.actions.modals.close(idModal, null )
-  //   }, []),
-  //   closeCatalogList: useCallback((list, idModal )=>{
-  //     store.actions.modals.close(idModal, list)
-  //     store.actions.catalogModal.resetParams()
-  //     store.actions.catalogModal.resetSelectItem()
-  //   }, [])
-  // }
-  // const modals = {
-  //   basket: <Basket key={codeGenerator()} />,
-  //   modalCount: <ModalCount key={codeGenerator()}  />,
-  //   modalCatalogList: <ModalCatalogList key={codeGenerator()}/> ,
-  // }
+  const modals = useSelector(state => state.modals.stack)
 
   return (
     <>
-      {stackModals.map(({name, close}, idx) => {
+      {modals.map(({name, close}, idx) => {
         switch (name){
           case 'basket':
             return <Basket key={idx} close={close}/>

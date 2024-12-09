@@ -41,4 +41,3 @@ export default function translate(lang:LangKeys, text: TextKey, plural?: number)
 
   return typeof result === 'string' ? result : text;
 }
-// const greeting = translate('ru', '')

@@ -15,32 +15,6 @@ export type StoreState = {
 type StoreActions = {
   [key in ModulesKey as StoreStateModuleKeys<key>]: InstanceType<typeof modules[key]>
 }
-// //Тип для каждого класса modules
-// type ModulesInstances = {
-//   [key in KeyModules]: InstanceType<Modules[key]>
-// }
-// //Тип для каждого экземпляра modules
-// export type ModulesState = {
-//   [key in KeyModules]: ReturnType<ModulesInstances[key]['initState']>
-// }
-
-// const modules: AllModules = m
-
-// type ModuleConstructor = { new (...args: any[]): any };
-
-// type ExtendableModules = {
-//   [key: string]: ModuleConstructor;
-// }
-
-// type AllModules = typeof m & ExtendableModules;
-// type KeyModules = keyof AllModules;
-
-// type ModulesInstances = {
-//   [key in KeyModules]: InstanceType<AllModules[key]>
-// }
-// export type ModulesState = {
-//   [key in KeyModules]: ReturnType<ModulesInstances[key]['initState']>
-// }
 
 
 class Store {
@@ -61,16 +35,6 @@ class Store {
     this.config = config;
     this.listeners = []; // Слушатели изменений состояния
     this.state = initState;
-    /** @type {{
-     * basket: BasketState,
-     * catalog: CatalogState,
-     * modals: ModalsState,
-     * article: ArticleState,
-     * locale: LocaleState,
-     * categories: CategoriesState,
-     * session: SessionState,
-     * profile: ProfileState
-     * }} */
     this.actions = {} as StoreActions;
 
     for (const name of Object.keys(modules) as any) {

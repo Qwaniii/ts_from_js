@@ -8,13 +8,9 @@ import ItemBasket from '../../components/item-basket';
 import List from '../../components/list';
 import ModalLayout from '../../components/modal-layout';
 import BasketTotal from '../../components/basket-total';
-import modalsActions from '../../store-redux/modals/actions';
-import {createPortal} from "react-dom";
 
 function Basket({close}: any) {
   const store = useStore();
-
-  // const [selectedItems, setSelectedItems] = useState([]);
 
   const select = useSelector(state => ({
     list: state.basket.list,

@@ -12,7 +12,6 @@ function CatalogFilter({stateNameCatalog = 'catalog', stateNameCategories = 'cat
   const store = useStore();
 
   const select = useSelector((state) => {
-    // console.log('CatalogFilter state', state)
     return{
     sort: state[stateNameCatalog]?.params?.sort,
     query: state[stateNameCatalog]?.params?.query,
@@ -77,7 +76,6 @@ function CatalogFilter({stateNameCatalog = 'catalog', stateNameCategories = 'cat
         value={select.query}
         onChange={callbacks.onSearch}
         placeholder={'Поиск'}
-        // delay={1000}
         theme={'big'}
       />
       <button onClick={callbacks.onReset}>{t && t('filter.reset')}</button>
