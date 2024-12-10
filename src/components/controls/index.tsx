@@ -2,7 +2,7 @@ import { memo } from 'react';
 import './style.css';
 
 type ControlsProps = {
-  onAdd: () => void
+  onAdd: any
   title: string
 }
 function Controls({ onAdd, title = "Добавить"}: ControlsProps) {

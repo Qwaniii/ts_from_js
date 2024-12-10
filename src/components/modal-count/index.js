@@ -43,16 +43,6 @@ function ModalCount ({close}){
       onClose={callbacks.closeModal}
     >
       <div className={cn('inputWrapper')}>
-        {/* <input
-          className={cn('input')}
-          readOnly
-          type={'number'}
-          min={"1"}
-          max={"100"}
-          value={inputValue}
-          onChange={callbacks.handleChange}
-          placeholder="Введите число"
-        /> */}
         <input className={cn("input")} min={1} max={1000} type="number" value={inputValue} onChange={callbacks.handleChange}></input>
       </div>
       <div className={cn("footer")}>

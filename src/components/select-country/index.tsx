@@ -2,6 +2,7 @@ import { memo, useEffect, useRef, useState } from 'react';
 import './style.css';
 import { cn as bem } from '@bem-react/classname';
 import useDebounce from '../../hooks/useDebounce';
+import Controls from '../controls';
 
 
 // type Options = {
@@ -14,7 +15,8 @@ type SelectCountryProps = {
   options: any;
   value: string | number;
   onChange: (value: string | number) => void;
-  getCountry: any
+  getCountry: any;
+  selectCountries: any
 }
 
 function SelectCountry(props: SelectCountryProps) {
@@ -24,13 +26,14 @@ function SelectCountry(props: SelectCountryProps) {
   
   const [value, setValue] = useState("")
   const [arr, setArr] = useState([])
+  const [selectArr, SetSelectArr] = useState<Array<any>>([])
   
   const debounceValue = useDebounce(value.toLowerCase(), 500)
 
   const main = useRef<HTMLDivElement>(null)
   const title = useRef<HTMLDivElement>(null)
 
-  const onSelect = (val: string) => {
+  const onSelect = (val: any) => {
     onChange(val);
   };
 
@@ -40,7 +43,14 @@ function SelectCountry(props: SelectCountryProps) {
   }, [debounceValue])
 
 
+
+
   let country = debounceValue ? arr : props.options
+
+  const addSelect = (e, value) => {
+    e.target.checked  ? SetSelectArr(prevState => [...prevState, value]) : SetSelectArr(prevState => prevState.filter(item => item.value !== value.value))
+  }
+
 
   const toggle: () => void = () => {
     if (main.current?.getAttribute('data-state') === "active") {
@@ -88,7 +98,7 @@ function SelectCountry(props: SelectCountryProps) {
   //   }
   // }, [debounceValue])
   
-
+  console.log(selectArr)
 
   const cn = bem('SelectCountry');
 
@@ -100,13 +110,16 @@ function SelectCountry(props: SelectCountryProps) {
           <span className={cn('name')}>{props.getCountry?.title ? props.getCountry?.title : props.options[0].title}</span>
         </div>
         <div className={cn('wrapper_out')}>
+          {selectArr.length > 0 && selectArr.map(item => (
+            <span className={cn('tag')}>{item.title}</span>
+          ))}
           <input type='text' className={cn('search')} placeholder='Поиск' onChange={(e) => setValue(e.target.value)}>
           </input>
           <ul>
-          {country.map(item => (
+          {country.map((item, i) => (
             <li>
-              <input className={cn('input')} key={item.value} id={item.value} type="checkbox" name="singleSelect"/>
-              <label htmlFor={item.value} onClick={() => onSelect(item.value)}>
+              <input className={cn('input')} key={item.value} id={item.value} type="checkbox" onChange={e => addSelect(e, item)} name="singleSelect"/>
+              <label htmlFor={item.value} /*onClick={() => onSelect(item.value)}*/ >
                 <span className={cn('code')}>{item.code}</span>
                 <span className={cn('name')}>{item.title}</span>
               </label>
@@ -118,6 +131,7 @@ function SelectCountry(props: SelectCountryProps) {
             // </option>
           ))}
           </ul>
+          <Controls title='Выбрать' onAdd={() => onSelect(selectArr.map(item => item.value))}/>
         </div>
       </div>
     </form>

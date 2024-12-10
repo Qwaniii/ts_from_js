@@ -6,7 +6,7 @@ import StoreModule from '../module';
 
 type CountriesStateType = {
   list: any;
-  waiting: boolean
+  waiting: boolean;
 }
 
 

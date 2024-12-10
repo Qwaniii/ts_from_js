@@ -67,6 +67,20 @@
   display: none;
 }
 
+.SelectCountry-input[type=checkbox]:checked ~ label  {
+  color: #FFFFFF;
+  background-color: #808DFF;
+}
+
+.SelectCountry-tag {
+  display: inline-block;
+  width: max-content;
+  background-color: #808DFF;
+  border-radius: 10px;
+  padding: 5px 7px;
+}
+
+
 
 
 .SelectCountry-wrapper_out {

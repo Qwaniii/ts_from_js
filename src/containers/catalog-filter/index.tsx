@@ -97,12 +97,13 @@ function CatalogFilter({stateNameCatalog = 'catalog', stateNameCategories = 'cat
         ...select.countries.map((item) => ({
           value: item._id,
           title: item.title,
-          code: item.code
+          code: item.code,
+          checked: false
         })),
       ],
       [select.countries],
     ),
-    getTitle: select.countries.filter(item => item._id === select.country),
+    getTitle: select.countries.filter(item => select.country[0] === item._id),
 
   };
 
@@ -121,6 +122,7 @@ function CatalogFilter({stateNameCatalog = 'catalog', stateNameCategories = 'cat
         value={select.country}
         onChange={callbacks.onCountry}
         getCountry={options.getTitle[0]}
+        selectCountries={select.country}
       />
       <Select options={options.sort} value={select.sort} onChange={callbacks.onSort}/>
       <Input
