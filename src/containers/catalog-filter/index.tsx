@@ -18,8 +18,6 @@ function CatalogFilter({stateNameCatalog = 'catalog', stateNameCategories = 'cat
     async () => {
       await store.actions.countries.load()
     },
-    [],
-    true,
   );
 
   const select = useSelector((state) => {
