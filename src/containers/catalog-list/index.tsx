@@ -6,6 +6,7 @@ import Item from '../../components/item';
 import List from '../../components/list';
 import Pagination from '../../components/pagination';
 import Spinner from '../../components/spinner';
+import ItemCountry from '../../components/item-country';
 
 
 
@@ -67,7 +68,7 @@ function CatalogList({stateName,  onSelected=([])=>{}}: CatalogListProps) {
   const renders = {
     item: useCallback(
       item => (
-        <Item
+        <ItemCountry
           item={item}
           onAdd={callbacks.openModalCount}
           link={`/articles/${item._id}`}

@@ -9,21 +9,21 @@ import treeToList from '../../utils/tree-to-list';
 import listToTree from '../../utils/list-to-tree';
 import SelectCountry from '../../components/select-country';
 import useInit from '../../hooks/use-init';
-import SelectCustom from '../select-custom';
+import OptionCountry from '../../components/option-country';
+import ItemCountry from '../../components/item-country';
+import ListCountry from '../../components/list-country';
+import Spinner from '../../components/spinner';
 
 
-function CatalogFilter({stateNameCatalog = 'catalog', stateNameCategories = 'categories'}) {
+function SelectCustom({stateNameCatalog = 'catalog', stateNameCategories = 'categories'}) {
+
+
+
   const store = useStore();
-
-  useInit(
-    async () => {
-      await 
-        store.actions.countries.load();
-    },
-  );
 
   const select = useSelector((state) => {
     return {
+        waiting: state.countries.waiting,
       sort: state[stateNameCatalog]?.params?.sort,
       query: state[stateNameCatalog]?.params?.query,
       category: state[stateNameCatalog]?.params?.category,
@@ -32,14 +32,23 @@ function CatalogFilter({stateNameCatalog = 'catalog', stateNameCategories = 'cat
       countries: state.countries.list || [],
   }});
 
-  const [arr , setArr] = useState([])
+  const [isOpen, setIsOpen] = useState(false)
 
 
   const callbacks = {
+
+    open: async () => {
+        setIsOpen(!isOpen)
+        await store.actions.countries.setParams()
+    } ,
+
+// -------------------------------------------------
+
     // Сортировка
     onSort: useCallback(sort => store.actions[stateNameCatalog].setParams({sort}), [store]),
     // Поиск
-    onSearch: useCallback(query => store.actions[stateNameCatalog].setParams({query, page: 1}), [store]),
+    onSearch: useCallback(query => store.actions.countries.search(query), [store]),
+    setSelect: useCallback(id => store.actions.countries.select(id), [store]),
     
     // onSearchCountry: query => {
     //   const filterSearch = select.countries.filter(item => item.title.toLowerCase().includes(query.toLowerCase()))
@@ -67,6 +76,9 @@ function CatalogFilter({stateNameCatalog = 'catalog', stateNameCategories = 'cat
       ,
       [store],
     )
+
+
+
   };
 
   const options = {
@@ -106,27 +118,43 @@ function CatalogFilter({stateNameCatalog = 'catalog', stateNameCategories = 'cat
 
   };
 
-
   const {t} = useTranslate();
 
+  const renders = {
+    item: useCallback(
+      item => (
+        <ItemCountry
+          item={item}
+          onSelectItem={callbacks.setSelect}
+        />
+      ),
+      [callbacks],
+    ),
+  };
+
+
+
+
+
   return (
-    <SideLayout padding="medium">
-      <Select
-        options={options.categories}
-        value={select.category}
-        onChange={callbacks.onCategory}
-      />
-      <SelectCustom/>
-      <Select options={options.sort} value={select.sort} onChange={callbacks.onSort}/>
-      <Input
-        value={select.query}
-        onChange={callbacks.onSearch}
-        placeholder={'Поиск'}
-        theme={'big'}
-      />
-      <button onClick={callbacks.onReset}>{t && t('filter.reset')}</button>
-    </SideLayout>
+    <>
+    <OptionCountry selectCountry="Country" openSelect={callbacks.open} classOpen={isOpen ? "classopen" : ""}>
+    {isOpen && 
+
+        <Spinner active={select.waiting}>
+            <Input
+                value={select.country}
+                onChange={callbacks.onSearch}
+                placeholder={'Поиск'}
+                theme={'big'}
+            />
+            <ListCountry list={select.countries} renderItem={renders.item} />
+        </Spinner>
+      }
+    </OptionCountry>
+    </>
+
   );
 }
 
-export default memo(CatalogFilter);
+export default memo(SelectCustom);

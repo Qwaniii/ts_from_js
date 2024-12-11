@@ -1,0 +1,36 @@
+.OptionCountry {
+    width: 240px;
+    position: relative;
+    font-size: 16px;
+    padding: 3px 2px 2px;  
+    border: 1px solid black;
+}
+
+.OptionCountry-main {
+    display: flex;
+    justify-content: space-between;
+}
+
+.OptionCountry-vector {
+    margin: 0 5px;
+    display: inline-block;
+    cursor: pointer;
+    transition: .1s all;
+    color: black;
+}
+
+.OptionCountry-vector.classopen {
+    transition: .1s all;
+    transform: rotate(180deg);
+}
+
+.OptionCountry-child {
+    max-width: 340px;
+    max-height: 200px;
+    position: absolute;
+    top: 35px;
+    left: 0;
+    background-color: white;
+    overflow-y: auto;
+    transition: all .3s;
+}
