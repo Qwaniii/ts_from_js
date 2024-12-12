@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { cn as bem } from '@bem-react/classname';
 import numberFormat from '../../utils/number-format';
@@ -20,16 +20,17 @@ import { Link } from 'react-router-dom';
 // }
 
 function ItemCountry(props: any) {
-  const { onAdd = () => {}, onSelectItem=()=>{}} = props;
+  const { onAdd = () => {}, onSelectItem=()=>{}, ids} = props;
   const cn = bem('ItemCountry');
+  
+const [arr ,setArr] = useState<string[]>(ids.map(item => item._id))
 
   const callbacks = {
-    onAdd: e => {
-      e.stopPropagation()
-      onAdd(props.item._id)
+    onSearch: () => {
     },
     onSelect: e => {
       onSelectItem(props.item._id)
+      setArr(prevState=> [...prevState, props.item._id])
     }
   };
 

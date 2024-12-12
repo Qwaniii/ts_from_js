@@ -36,7 +36,8 @@ function SelectCustom({stateNameCatalog = 'catalog', stateNameCategories = 'cate
     open:  async () => {
         setIsOpen(!isOpen)
     } ,
-    load: useCallback(async (value) => await store.actions.countries.setParams({page: value}), [store]),
+    load: (async (value) => await store.actions.countries.setParams({page: value})),
+    multiple: useCallback(async (arr) => await store.actions.catalog.setParams({madeIn: arr}), [store]),
     // Поиск
     onSearch: useCallback(query => store.actions.countries.search(query), [store]),
     onSearchTitle: useCallback((ids) => store.actions.countries.searchByIds(ids), [store]),
@@ -55,18 +56,18 @@ function SelectCustom({stateNameCatalog = 'catalog', stateNameCategories = 'cate
         <ItemCountry
           item={item}
           onSelectItem={callbacks.setSelect}
-          
+          onAdd={callbacks.multiple}
+          ids={options.getTitle}
         />
       ),
       [callbacks],
     ),
   };
 
-  const [page, setPage] = useState(1)
 
-  useEffect(() => {
-    callbacks.load(page)
-  }, [page])
+  // useEffect(() => {
+  //   callbacks.load(page)
+  // }, [page])
 
   return (
     <SideLayout padding="medium">
@@ -78,15 +79,15 @@ function SelectCustom({stateNameCatalog = 'catalog', stateNameCategories = 'cate
                       classOpen={isOpen ? "classopen" : ""}>
       {isOpen && 
 
-          <Spinner active={select.waiting}>
+          <>
               <Input
-                  value={select.country}
+                  value={""}
                   onChange={callbacks.onSearch}
                   placeholder={'Поиск'}
                   theme={'med'}
               />
-              <ListCountry list={select.countries} setPage={setPage} page={page} renderItem={renders.item} />
-          </Spinner>
+              <ListCountry list={select.countries}  load={callbacks.load} renderItem={renders.item} />
+          </>
         }
       </OptionCountry>
       <button onClick={() => null}>{t && t('filter.reset')}</button>

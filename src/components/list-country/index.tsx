@@ -7,13 +7,13 @@ import {ItemBasket} from "../item-basket";
 type ListCountryProps = {
   list: any;
   renderItem: (item: any)=> React.ReactNode;
-  setPage: any
-  page: any
+
+  load: any
 }
 
-function ListCountry({ list, renderItem, setPage, page }: ListCountryProps) {
+function ListCountry({ list, renderItem,  load }: ListCountryProps) {
 
-  const [next, setNext] = useState(0)
+  const [page, setPage] = useState(1)
 
   const observer = useRef<IntersectionObserver | null>(null);
 
@@ -22,23 +22,26 @@ function ListCountry({ list, renderItem, setPage, page }: ListCountryProps) {
     observer.current = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting) {
         // Когда последний элемент появляется в поле зрения, загружаем новые данные
-        console.log("last")
+        load(page)
         setPage(page + 1)
-
       }
     });
     if (node) observer.current.observe(node); // Запуск наблюдения за последним элементом
-  }, [next]);
+  }, []);
+
 
 
   return (
+    <>
     <ul className="ListCountry">
       {list.map((item, index) => (
-        <li key={item._id} ref={index + 1 === list.length ? lastItemRef : null}>
+        <li key={item._id} >
           {renderItem(item)}
         </li>
       ))}
     </ul>
+    <div ref={lastItemRef}></div>
+    </>
   );
 }
 

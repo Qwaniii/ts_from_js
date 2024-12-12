@@ -58,26 +58,41 @@ class CountriesState extends StoreModule {
 
 
   async setParams(newParams = {}): Promise<void> {
+    
     const params = {...this.getState().params, ...newParams};
 
     // Установка новых параметров и признака загрузки
     this.setState(
       {
         ...this.getState(),
+        params,
         waiting: true,
+      },
+      "Установка параметров стран"
+    );
+
+    const apiParams = exclude(
+      {
+        limit: params.limit,
+        skip: (params.page - 1) * params.limit,
+        fields: 'items(_id,title,code),count',
+        'search[query]': params.query,
+      },
+      {
+        skip: 0,
+        'search[query]': '',
       },
     );
 
     const res = await this.services.api.request({
-      url: `/api/v1/countries?search[query]=${params.query}&limit=${params.limit}&skip=${(params.page - 1) * params.limit}&fields=items(_id,title,code),count`,
+      url: `/api/v1/countries?${new URLSearchParams(apiParams)}`,
     });
+
     this.setState(
       {
         ...this.getState(),
-        list: [...this.getState().list,...res.data.result.items],
-
+        list: this.getState().list.concat(res.data.result.items),
         waiting: false,
-        params
       },
       'Загружены страны из АПИ',
     );

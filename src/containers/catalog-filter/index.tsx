@@ -13,6 +13,7 @@ import SelectCustom from '../select-custom';
 
 
 function CatalogFilter({stateNameCatalog = 'catalog', stateNameCategories = 'categories'}) {
+  
   const store = useStore();
 
   // useInit(
