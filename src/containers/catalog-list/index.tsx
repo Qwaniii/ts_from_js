@@ -68,7 +68,7 @@ function CatalogList({stateName,  onSelected=([])=>{}}: CatalogListProps) {
   const renders = {
     item: useCallback(
       item => (
-        <ItemCountry
+        <Item
           item={item}
           onAdd={callbacks.openModalCount}
           link={`/articles/${item._id}`}

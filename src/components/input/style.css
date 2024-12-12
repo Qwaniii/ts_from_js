@@ -6,3 +6,17 @@
 .Input_theme_big {
   width: 300px;
 }
+
+.Input_theme_med {
+  width: 240px;
+  border: none;
+  outline: none;
+  padding-left: 10px;
+
+}
+
+.Input_theme_med::placeholder {
+  font-size: 13px;
+  font-style: italic;
+  position: relative;
+}

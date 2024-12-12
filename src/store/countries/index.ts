@@ -1,5 +1,6 @@
 import StoreModule from '../module';
 import exclude from '../../utils/exclude';
+import list from '../../components/list';
 
 
 /**
@@ -11,6 +12,7 @@ type CountriesStateType = {
   waiting: boolean
   params: any
   count: number
+  listTitle: any
 }
 
 
@@ -22,12 +24,13 @@ class CountriesState extends StoreModule {
     return {
       list: [],
       params: {
-        // page: 1,
+        page: 1,
         limit: 10,
         query: '',
       },
       count: 0,
       waiting: false,
+      listTitle: []
     };
   }
 
@@ -54,68 +57,59 @@ class CountriesState extends StoreModule {
 
 
 
-  async setParams(newParams = {}, replaceHistory = false): Promise<void> {
+  async setParams(newParams = {}): Promise<void> {
     const params = {...this.getState().params, ...newParams};
 
     // Установка новых параметров и признака загрузки
     this.setState(
       {
         ...this.getState(),
-        params,
         waiting: true,
-      },
-      'Установлены параметры каталога',
-    );
-
-    // Сохранить параметры в адрес страницы
-/*     if(this.config.saveParams){ */
-      let urlSearch = new URLSearchParams(exclude(params, this.initState().params)).toString();
-      const url =
-        window.location.pathname + (urlSearch ? `?${urlSearch}` : '') + window.location.hash;
-      if (replaceHistory) {
-        window.history.replaceState({}, '', url);
-      } else {
-        window.history.pushState({}, '', url);
-      }
-/*     } */
-
-    const apiParams = exclude(
-      {
-        limit: params.limit,
-        // skip: (params.page - 1) * params.limit,
-        fields: 'items(*),count',
-        'search[query]': params.query,
-      },
-      {
-        skip: 0,
-        'search[query]': '',
       },
     );
 
     const res = await this.services.api.request({
-      url: `/api/v1/countries?${new URLSearchParams(apiParams)}`,
+      url: `/api/v1/countries?search[query]=${params.query}&limit=${params.limit}&skip=${(params.page - 1) * params.limit}&fields=items(_id,title,code),count`,
     });
     this.setState(
       {
         ...this.getState(),
-        list: res.data.result.items,
-        count: res.data.result.count,
+        list: [...this.getState().list,...res.data.result.items],
+
         waiting: false,
+        params
       },
-      'Загружеys страны из АПИ',
+      'Загружены страны из АПИ',
     );
   }
 
   async search(string) {
 
     const res = await this.services.api.request({
-      url: `/api/v1/countries?search[query]=${string}&fields=_id,title,code&limit=*`,
+      url: `/api/v1/countries?search[query]=${string}&fields=_id,title,code&limit=*,count`,
     });
 
     this.setState(
       {
         ...this.getState(),
         list: res.data.result.items,
+      },
+      'Поиск завершен',
+    );
+
+
+}
+
+  async searchByIds(array) {
+
+    const res = await this.services.api.request({
+      url: `/api/v1/countries?search[ids]=${array}&fields=_id,title,code&limit=*,count`,
+    });
+
+    this.setState(
+      {
+        ...this.getState(),
+        listTitle: res.data.result.items,
       },
       'Поиск завершен',
     );
@@ -134,6 +128,7 @@ select(id) {
       })
     }
   )
+  console.log("selecct")
   
 
 }

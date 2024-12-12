@@ -21,7 +21,7 @@ import { Link } from 'react-router-dom';
 
 function ItemCountry(props: any) {
   const { onAdd = () => {}, onSelectItem=()=>{}} = props;
-  const cn = bem('Item');
+  const cn = bem('ItemCountry');
 
   const callbacks = {
     onAdd: e => {
@@ -34,7 +34,7 @@ function ItemCountry(props: any) {
   };
 
   return (
-    <div onClick={callbacks.onSelect} className={cn(props.item.selected ? 'selected' : '')}>
+    <div onClick={callbacks.onSelect} className={cn('', props.item.selected ? 'selected' : '')}>
       <div className={cn('code')}>
         <div>{props.item.code}</div>
       </div>

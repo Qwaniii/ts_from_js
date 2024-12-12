@@ -1,4 +1,4 @@
-import {memo, useCallback, useMemo, useState} from 'react';
+import {memo, useCallback, useEffect, useMemo, useState} from 'react';
 import useTranslate from '../../hooks/use-translate';
 import useStore from '../../hooks/use-store';
 import useSelector from '../../hooks/use-selector';
@@ -17,19 +17,15 @@ import Spinner from '../../components/spinner';
 
 function SelectCustom({stateNameCatalog = 'catalog', stateNameCategories = 'categories'}) {
 
-
-
   const store = useStore();
 
   const select = useSelector((state) => {
     return {
-        waiting: state.countries.waiting,
-      sort: state[stateNameCatalog]?.params?.sort,
-      query: state[stateNameCatalog]?.params?.query,
-      category: state[stateNameCatalog]?.params?.category,
+      waiting: state.countries.waiting,
+      page: state.countries.params?.page,
       country: state[stateNameCatalog]?.params?.madeIn,
-      categories: state[stateNameCategories]?.list || [],
       countries: state.countries.list || [],
+      countriesTitle: state.countries.listTitle || [],
   }});
 
   const [isOpen, setIsOpen] = useState(false)
@@ -37,85 +33,18 @@ function SelectCustom({stateNameCatalog = 'catalog', stateNameCategories = 'cate
 
   const callbacks = {
 
-    open: async () => {
+    open:  async () => {
         setIsOpen(!isOpen)
-        await store.actions.countries.setParams()
     } ,
-
-// -------------------------------------------------
-
-    // Сортировка
-    onSort: useCallback(sort => store.actions[stateNameCatalog].setParams({sort}), [store]),
+    load: useCallback(async (value) => await store.actions.countries.setParams({page: value}), [store]),
     // Поиск
     onSearch: useCallback(query => store.actions.countries.search(query), [store]),
+    onSearchTitle: useCallback((ids) => store.actions.countries.searchByIds(ids), [store]),
     setSelect: useCallback(id => store.actions.countries.select(id), [store]),
-    
-    // onSearchCountry: query => {
-    //   const filterSearch = select.countries.filter(item => item.title.toLowerCase().includes(query.toLowerCase()))
-    //   setArr(filterSearch)
-    // },
-
-    // Сброс
-    onReset: useCallback(() => store.actions[stateNameCatalog].resetParams(), [store]),
-    // Фильтр по категории
-    onCategory: useCallback(
-      category =>
-        store.actions[stateNameCatalog].setParams({
-          category,
-          page: 1,
-        })
-      ,
-      [store],
-    ),
-    onCountry: useCallback(
-      madeIn =>
-        store.actions[stateNameCatalog].setParams({
-          madeIn,
-          page: 1,
-        })
-      ,
-      [store],
-    )
-
-
-
   };
 
   const options = {
-    // Варианты сортировок
-    sort: useMemo(
-      () => [
-        {value: 'order', title: 'По порядку'},
-        {value: 'title.ru', title: 'По именованию'},
-        {value: '-price', title: 'Сначала дорогие'},
-        {value: 'edition', title: 'Древние'},
-      ],
-      [],
-    ),
-    // Категории для фильтра
-    categories: useMemo(
-      () => [
-        {value: '', title: 'Все категории'},
-        ...treeToList(listToTree(select.categories), (item, level) => ({
-          value: item._id,
-          title: '- '.repeat(level) + item.title,
-        })),
-      ],
-      [select.categories],
-    ),
-    countries: useMemo(
-      () => [
-        {value: '', title: 'Все страны', code: ' '},
-        ...select.countries.map((item) => ({
-          value: item._id,
-          title: item.title,
-          code: item.code
-        })),
-      ],
-      [select.countries],
-    ),
-    getTitle: select.countries.filter(item => item._id === select.country),
-
+    getTitle: select.countries.filter(item => item.selected),
   };
 
   const {t} = useTranslate();
@@ -126,33 +55,42 @@ function SelectCustom({stateNameCatalog = 'catalog', stateNameCategories = 'cate
         <ItemCountry
           item={item}
           onSelectItem={callbacks.setSelect}
+          
         />
       ),
       [callbacks],
     ),
   };
 
+  const [page, setPage] = useState(1)
 
-
-
+  useEffect(() => {
+    callbacks.load(page)
+  }, [page])
 
   return (
-    <>
-    <OptionCountry selectCountry="Country" openSelect={callbacks.open} classOpen={isOpen ? "classopen" : ""}>
-    {isOpen && 
+    <SideLayout padding="medium">
+    
+      <OptionCountry  selectCountry={select.countriesTitle} 
+                      titleCountry={options.getTitle} 
+                      searchTitle={callbacks.onSearchTitle} 
+                      openSelect={callbacks.open} 
+                      classOpen={isOpen ? "classopen" : ""}>
+      {isOpen && 
 
-        <Spinner active={select.waiting}>
-            <Input
-                value={select.country}
-                onChange={callbacks.onSearch}
-                placeholder={'Поиск'}
-                theme={'big'}
-            />
-            <ListCountry list={select.countries} renderItem={renders.item} />
-        </Spinner>
-      }
-    </OptionCountry>
-    </>
+          <Spinner active={select.waiting}>
+              <Input
+                  value={select.country}
+                  onChange={callbacks.onSearch}
+                  placeholder={'Поиск'}
+                  theme={'med'}
+              />
+              <ListCountry list={select.countries} setPage={setPage} page={page} renderItem={renders.item} />
+          </Spinner>
+        }
+      </OptionCountry>
+      <button onClick={() => null}>{t && t('filter.reset')}</button>
+    </SideLayout>
 
   );
 }

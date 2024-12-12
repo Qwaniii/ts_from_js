@@ -1,14 +1,11 @@
-.List {
+.ListCountry {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-.List-item {
+.ListCountry-item {
   border-bottom: 1px dashed #ccc;
 }
 
-.List-item:first-child {
-  border-top: 1px dashed #ccc;
-}
-.List-item_selected {
-  background: #75aaf1;
-  color: #fff;
-}
+

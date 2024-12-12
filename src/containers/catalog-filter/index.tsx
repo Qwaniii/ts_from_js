@@ -15,12 +15,12 @@ import SelectCustom from '../select-custom';
 function CatalogFilter({stateNameCatalog = 'catalog', stateNameCategories = 'categories'}) {
   const store = useStore();
 
-  useInit(
-    async () => {
-      await 
-        store.actions.countries.load();
-    },
-  );
+  // useInit(
+  //   async () => {
+  //     await 
+  //       store.actions.countries.load();
+  //   },
+  // );
 
   const select = useSelector((state) => {
     return {
@@ -102,7 +102,6 @@ function CatalogFilter({stateNameCatalog = 'catalog', stateNameCategories = 'cat
       ],
       [select.countries],
     ),
-    getTitle: select.countries.filter(item => item._id === select.country),
 
   };
 
@@ -116,7 +115,6 @@ function CatalogFilter({stateNameCatalog = 'catalog', stateNameCategories = 'cat
         value={select.category}
         onChange={callbacks.onCategory}
       />
-      <SelectCustom/>
       <Select options={options.sort} value={select.sort} onChange={callbacks.onSort}/>
       <Input
         value={select.query}
