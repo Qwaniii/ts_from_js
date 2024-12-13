@@ -25,7 +25,7 @@ class CountriesState extends StoreModule {
       list: [],
       params: {
         page: 1,
-        limit: 10,
+        limit:10,
         query: '',
       },
       count: 0,
@@ -91,7 +91,7 @@ class CountriesState extends StoreModule {
     this.setState(
       {
         ...this.getState(),
-        list: this.getState().list.concat(res.data.result.items),
+        list: this.getState().list(res.data.result.items),
         waiting: false,
       },
       'Загружены страны из АПИ',
