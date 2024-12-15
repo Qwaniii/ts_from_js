@@ -15,6 +15,10 @@ function ListCountry({ list, renderItem,  load }: ListCountryProps) {
 
   const [page, setPage] = useState(1)
 
+  // useEffect(() => {
+  //   load(page)
+  // }, [page])
+
   const observer = useRef<IntersectionObserver | null>(null);
 
   const lastItemRef = useCallback(node => {
@@ -22,7 +26,6 @@ function ListCountry({ list, renderItem,  load }: ListCountryProps) {
     observer.current = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting) {
         // Когда последний элемент появляется в поле зрения, загружаем новые данные
-        load(page)
         setPage(page + 1)
       }
     });

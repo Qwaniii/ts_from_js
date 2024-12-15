@@ -1,0 +1,8 @@
+.ChatWindow {
+  width: 600px;
+  height: 500px;
+  box-sizing: border-box;
+  border: 1px solid black;
+  background-color: rgba(119, 136, 153, 0.2);
+  overflow-y: auto;
+}

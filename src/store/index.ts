@@ -133,7 +133,6 @@ class Store {
       );
       console.log(`%c${'prev:'}`, `color: ${'#d77332'}`, this.state);
       console.log(`%c${'next:'}`, `color: ${'#2fa827'}`, newState);
-      console.log(`%c${'actions:'}`, `color: ${'#2fa827'}`, this.actions);
       console.groupEnd();
     }
     this.state = newState;

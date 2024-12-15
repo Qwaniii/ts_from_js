@@ -20,6 +20,12 @@
   justify-content: space-between;
 }
 
+.SideLayout_side_center {
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+}
+
 .SideLayout_padding_small {
   padding: 10px 20px;
 }

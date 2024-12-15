@@ -36,8 +36,8 @@ function SelectCustom({stateNameCatalog = 'catalog', stateNameCategories = 'cate
     open:  async () => {
         setIsOpen(!isOpen)
     } ,
-    load: (async (value) => await store.actions.countries.setParams({page: value})),
-    multiple: useCallback(async (arr) => await store.actions.catalog.setParams({madeIn: arr}), [store]),
+    load: ( (value) =>  store.actions.countries.setParams({page: value})),
+    multiple: useCallback( (arr) =>  store.actions.catalog.setParams({madeIn: arr}), [store]),
     // Поиск
     onSearch: useCallback(query => store.actions.countries.search(query), [store]),
     onSearchTitle: useCallback((ids) => store.actions.countries.searchByIds(ids), [store]),

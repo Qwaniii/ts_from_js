@@ -1,0 +1,40 @@
+.ItemChat {
+  width: inherit;
+  list-style: none;
+  float: right;
+}
+
+.ItemChat-text {
+  background-color: white;
+  border-radius: 5px;
+  width: max-content;
+  padding: 7px 10px;
+  margin: 0 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  position: relative;
+
+}
+
+.ItemChat-text.author {
+  float: right;
+  background-color: aquamarine;
+}
+
+.ItemChat-user {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.ItemChat-time {
+  font-size: 10px;
+  color: gray;
+  align-self: flex-end;
+}
+
+.ItemChat-confirm {
+  position: absolute;
+  top: -10px;
+  right: 0;
+}

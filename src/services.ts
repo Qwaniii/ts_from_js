@@ -1,8 +1,10 @@
 import APIService from './api';
+import Websocket from './socket';
 import Store from './store';
 import createStoreRedux from './store-redux';
 
 export type KeyModulesConfig = keyof ModulesConfig | string
+
 export type ModulesConfig = {
   session: {
     tokenHeader: string;
@@ -12,23 +14,30 @@ export type ModulesConfig = {
   };
   [key: string]: any;
 };
+
 export type StoreConfig = {
   log: boolean;
   modules: ModulesConfig
 }
+
 export type AppConfig = {
   store: StoreConfig;
   api: {
     baseUrl: string;
   }
   redux:{}
+  websocket: {
+    baseSocketUrl?: string
+  }
 };
+
 
 class Services {
    _api: any
    _store?: Store
    _redux: any
   config: AppConfig
+  _websocket: any
 
   constructor(config: AppConfig) {
     this.config = config;
@@ -64,6 +73,15 @@ class Services {
       this._redux = createStoreRedux(this, this.config.redux);
     }
     return this._redux;
+  }
+
+  /* WebSocket */
+
+  get websocket() {
+    if (!this._websocket) {
+      this._websocket = new Websocket(this, this.config.websocket)
+    }
+    return this._websocket
   }
 }
 

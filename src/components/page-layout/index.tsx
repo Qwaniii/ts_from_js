@@ -3,9 +3,9 @@ import { cn as bem } from '@bem-react/classname';
 import './style.css';
 
 type PageLayoutProps = {
-  head: React.ReactNode;
-  footer: React.ReactNode;
-  children: React.ReactNode;
+  head?: React.ReactNode;
+  footer?: React.ReactNode;
+  children?: React.ReactNode;
 }
 function PageLayout({ head, footer, children }: PageLayoutProps) {
   const cn = bem('PageLayout');

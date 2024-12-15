@@ -45,6 +45,7 @@ class ProfileState extends StoreModule {
       'Загружен профиль из АПИ',
     );
   }
+
 }
 
 export default ProfileState;

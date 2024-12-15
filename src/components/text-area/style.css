@@ -1,0 +1,15 @@
+.TextArea {
+  width: 600px;
+  height: 30px;
+  display: flex;
+  gap: 5px;
+}
+
+.TextArea-input  {
+  width: 80%;
+}
+
+.TextArea-button {
+  width: 20%;
+  cursor: pointer;
+}

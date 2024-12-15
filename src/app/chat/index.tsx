@@ -12,13 +12,13 @@ import ArticleCard from '../../components/article-card';
 import LocaleSelect from '../../containers/locale-select';
 import TopHead from '../../containers/top-head';
 import ProfileCard from '../../components/profile-card';
-import SideLayout from '../../components/side-layout';
+import ChatPage from '../../containers/chat-page';
 
-function Profile() {
+function Chat() {
   const store = useStore();
 
   useInit(() => {
-    store.actions.profile.load();
+
   }, []);
 
   const select = useSelector(state => ({
@@ -35,14 +35,9 @@ function Profile() {
         <LocaleSelect />
       </Head>
       <Navigation />
-      <Spinner active={select.waiting}>
-        <ProfileCard data={select.profile} />
-        <SideLayout padding="medium">
-          <Link to={`/chat`}>Перейти в чат</Link>
-        </SideLayout>
-      </Spinner>
+      <ChatPage/>
     </PageLayout>
   );
 }
 
-export default memo(Profile);
+export default memo(Chat);

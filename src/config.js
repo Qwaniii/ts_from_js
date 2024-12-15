@@ -21,7 +21,10 @@ const config = {
   api: {
     baseUrl: '',
   },
-  redux:{}
+  redux:{},
+  websocket: {
+    baseSocketUrl: 'ws://query.rest/ws'
+  }
 };
 
 export default config;

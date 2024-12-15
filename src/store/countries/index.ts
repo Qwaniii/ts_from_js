@@ -1,6 +1,5 @@
 import StoreModule from '../module';
 import exclude from '../../utils/exclude';
-import list from '../../components/list';
 
 
 /**
@@ -91,7 +90,7 @@ class CountriesState extends StoreModule {
     this.setState(
       {
         ...this.getState(),
-        list: this.getState().list(res.data.result.items),
+        list: [...res.data.result.items],
         waiting: false,
       },
       'Загружены страны из АПИ',
