@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
-import PropTypes from 'prop-types';
+import PropTypes, { node } from 'prop-types';
 import {ItemType} from '../item';
 import './style.css';
 import {ItemBasket} from "../item-basket";
@@ -8,42 +8,26 @@ type ListCountryProps = {
   list: any;
   renderItem: (item: any)=> React.ReactNode;
 
-  load: any
+  scroll: any
 }
 
-function ListCountry({ list, renderItem,  load }: ListCountryProps) {
-
-  const [page, setPage] = useState(1)
+function ListCountry({ list, renderItem,  scroll }: ListCountryProps) {
 
   // useEffect(() => {
   //   load(page)
   // }, [page])
 
-  const observer = useRef<IntersectionObserver | null>(null);
-
-  const lastItemRef = useCallback(node => {
-    if (observer.current) observer.current.disconnect();
-    observer.current = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting) {
-        // Когда последний элемент появляется в поле зрения, загружаем новые данные
-        setPage(page + 1)
-      }
-    });
-    if (node) observer.current.observe(node); // Запуск наблюдения за последним элементом
-  }, []);
-
 
 
   return (
     <>
-    <ul className="ListCountry">
+    <ul className="ListCountry" onScroll={scroll}>
       {list.map((item, index) => (
-        <li key={item._id} >
+        <li key={item._id}>
           {renderItem(item)}
         </li>
       ))}
     </ul>
-    <div ref={lastItemRef}></div>
     </>
   );
 }

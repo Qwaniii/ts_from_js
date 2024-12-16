@@ -27,14 +27,14 @@ class ProfileState extends StoreModule {
    * Загрузка профиля
    * @return {Promise<void>}
    */
-  async load(): Promise<void> {
+  async load(id): Promise<void> {
     // Сброс текущего профиля и установка признака ожидания загрузки
     this.setState({
       data: {},
       waiting: true,
     });
 
-    const { data } = await this.services.api.request({ url: `/api/v1/users/self` });
+    const { data } = await this.services.api.request({ url: `/api/v1/users/${id}` });
 
     // Профиль загружен успешно
     this.setState(

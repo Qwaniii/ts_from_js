@@ -1,5 +1,6 @@
 import StoreModule from '../module';
 import exclude from '../../utils/exclude';
+import list from '../../components/list';
 
 
 /**
@@ -23,9 +24,10 @@ class CountriesState extends StoreModule {
     return {
       list: [],
       params: {
-        page: 1,
-        limit:10,
+        page: 0,
+        limit:20,
         query: '',
+        skip: ''
       },
       count: 0,
       waiting: false,
@@ -64,7 +66,6 @@ class CountriesState extends StoreModule {
     this.setState(
       {
         ...this.getState(),
-        params,
         waiting: true,
       },
       "Установка параметров стран"
@@ -73,8 +74,8 @@ class CountriesState extends StoreModule {
     const apiParams = exclude(
       {
         limit: params.limit,
-        skip: (params.page - 1) * params.limit,
-        fields: 'items(_id,title,code),count',
+        skip: params.page * 10,
+        fields: '_id,title,code',
         'search[query]': params.query,
       },
       {
@@ -84,18 +85,23 @@ class CountriesState extends StoreModule {
     );
 
     const res = await this.services.api.request({
-      url: `/api/v1/countries?${new URLSearchParams(apiParams)}`,
+      url: `/api/v1/countries??fields=_id,title,code&limit=20&skip=${this.getState().params.page * 20}`,
     });
 
     this.setState(
       {
         ...this.getState(),
-        list: [...res.data.result.items],
+        list: [...this.getState().list,...res.data.result.items],
+        params: {
+          ...this.getState().params,
+          page: this.getState().params.page + 1,
+        },
         waiting: false,
       },
       'Загружены страны из АПИ',
     );
   }
+
 
   async search(string) {
 

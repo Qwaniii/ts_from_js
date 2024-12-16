@@ -4,6 +4,7 @@ import ChatWindow from '../../components/chat-window'
 import TextArea from '../../components/text-area'
 import useStore from '../../hooks/use-store'
 import useSelector from '../../hooks/use-selector'
+import ItemChat from '../../components/item-chat'
 
 function ChatPage({}) {
 
@@ -28,11 +29,24 @@ function ChatPage({}) {
     return () => store.actions.socket.close()
   },[])
 
+  const renders = {
+     message: useCallback(
+          message => (
+            <ItemChat
+              message={message}
+              user={select.user}
+              confirm={select.delivery}
+              link={`/profile/${message.author._id}`}
+            />
+          ),
+          [select.user],
+        ),
+  }
+
   return (
     <SideLayout side='center' padding='medium'>
       <ChatWindow allMessages={select.message} 
-                  user={select.user}
-                  confirm={select.delivery}/>
+                  renderItem={renders.message}/>
       <TextArea send={callbacks.send}/>
     </SideLayout>
   )

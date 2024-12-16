@@ -16,7 +16,8 @@ type ListProps = {
 
 function OptionCountry({ selectCountry,  openSelect, classOpen, children, titleCountry, searchTitle }: ListProps) {
 
-    const onOpen = () => {
+    const onOpen = (e) => {
+        e.preventDefault()
         openSelect()
     }
 
@@ -24,18 +25,18 @@ function OptionCountry({ selectCountry,  openSelect, classOpen, children, titleC
     <div className="OptionCountry">
         <div className='OptionCountry-main' onClick={onOpen}>
             <span className='OptionCountry-wrapper'>
-        {!titleCountry.length && "Все страны"}
-        {titleCountry.length  && titleCountry.length < 4 ? titleCountry.map(item => 
-        <>
-            <span className='OptionCountry-code'>{item.code}</span>
-            <span  className='OptionCountry-title'>{item.title}</span>
-            </>
-        ):  titleCountry.map(item => 
-            <>
+                {!titleCountry.length && "Все страны"}
+                {titleCountry.length  && titleCountry.length < 4 ? titleCountry.map(item => 
+            <div key={item._id}>
                 <span className='OptionCountry-code'>{item.code}</span>
-            </>)
-        }
-        </span>
+                <span  className='OptionCountry-title'>{item.title}</span>
+            </div>
+            ):  titleCountry.map(item => 
+            <div key={item._id}>
+                    <span className='OptionCountry-code'>{item.code}</span>
+            </div>)
+            }
+            </span>
             <div className={`OptionCountry-vector ${classOpen}`}>
                 <Vector />
             </div>

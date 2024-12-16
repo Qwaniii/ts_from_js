@@ -1,3 +1,4 @@
+import itemBasket from "../../components/item-basket";
 import uniqKey from "../../utils/uniq-key";
 import StoreModule from "../module";
 
@@ -46,13 +47,14 @@ class WebSock extends StoreModule {
           }
         }))
 
-        // socket.send(JSON.stringify({
-        //   method: 'last',
-        //   payload: {
-        //     fromDate: ''
-        //   }
-      
-        // }))
+        if(this.getState().auth) {
+          socket.send(JSON.stringify({
+          method: 'last',
+          payload: {
+            fromDate: '2024-12-04T09:56:18.109Z'
+          }
+        }))
+      }
 
       }    
 
@@ -70,16 +72,16 @@ class WebSock extends StoreModule {
           case 'last':
             this.setState({
               ...this.getState(),
-              messages: [...mes.payload.items]
+              messages: [...mes.payload.items.map(item => [...{...item, confirmed: true}])]
             })
-            break;
-            case 'post':
-              const delivery = this.getState().deliveredMes.find(item => item.key === mes.payload._key)
-              this.setState({
-                ...this.getState(),
-                messages: [...this.getState().messages, mes.payload],
-                deliveredMes: delivery ? [...this.getState().deliveredMes.filter(item => item.key !== mes.payload._key), {...delivery, confirmed: true}] : [...this.getState().deliveredMes]
-              })
+          break;
+          case 'post':
+            const delivery = this.getState().deliveredMes.find(item => item.key === mes.payload._key)
+            this.setState({
+              ...this.getState(),
+              messages: [...this.getState().messages, mes.payload],
+              deliveredMes: delivery ? [...this.getState().deliveredMes.filter(item => item.key !== mes.payload._key), {...delivery, confirmed: true}] : [...this.getState().deliveredMes]
+            })
         }
       }
 

@@ -17,9 +17,11 @@ import SideLayout from '../../components/side-layout';
 function Profile() {
   const store = useStore();
 
+  const params = useParams()
+
   useInit(() => {
-    store.actions.profile.load();
-  }, []);
+    store.actions.profile.load(params.id);
+  }, [params.id]);
 
   const select = useSelector(state => ({
     profile: state.profile.data,

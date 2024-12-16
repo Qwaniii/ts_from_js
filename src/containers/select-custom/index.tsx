@@ -1,4 +1,4 @@
-import {memo, useCallback, useEffect, useMemo, useState} from 'react';
+import {memo, useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import useTranslate from '../../hooks/use-translate';
 import useStore from '../../hooks/use-store';
 import useSelector from '../../hooks/use-selector';
@@ -24,8 +24,8 @@ function SelectCustom({stateNameCatalog = 'catalog', stateNameCategories = 'cate
       waiting: state.countries.waiting,
       page: state.countries.params?.page,
       country: state[stateNameCatalog]?.params?.madeIn,
-      countries: state.countries.list || [],
-      countriesTitle: state.countries.listTitle || [],
+      countries: state.countries.list,
+      countriesTitle: state.countries.listTitle,
   }});
 
   const [isOpen, setIsOpen] = useState(false)
@@ -33,10 +33,11 @@ function SelectCustom({stateNameCatalog = 'catalog', stateNameCategories = 'cate
 
   const callbacks = {
 
-    open:  async () => {
+    open: useCallback(async () => {
         setIsOpen(!isOpen)
-    } ,
-    load: ( (value) =>  store.actions.countries.setParams({page: value})),
+        await store.actions.countries.setParams()
+    }, [store]),
+    load: useCallback( async() => await store.actions.countries.setParams(), [store]),
     multiple: useCallback( (arr) =>  store.actions.catalog.setParams({madeIn: arr}), [store]),
     // Поиск
     onSearch: useCallback(query => store.actions.countries.search(query), [store]),
@@ -46,6 +47,12 @@ function SelectCustom({stateNameCatalog = 'catalog', stateNameCategories = 'cate
 
   const options = {
     getTitle: select.countries.filter(item => item.selected),
+    countries: useMemo(
+      () => [
+          ...select.countries,
+      ],
+      [select.countries],
+  ),
   };
 
   const {t} = useTranslate();
@@ -60,8 +67,30 @@ function SelectCustom({stateNameCatalog = 'catalog', stateNameCategories = 'cate
           ids={options.getTitle}
         />
       ),
-      [callbacks],
+      [callbacks.setSelect],
     ),
+  };
+
+  // const observer = useRef<IntersectionObserver | null>(null);
+
+  // const lastItemRef = useCallback((node, observer) => {
+  //   if (observer.current) observer.current.disconnect();
+  //   observer.current = new IntersectionObserver(entries => {
+  //     console.log(entries[0])
+  //     if (entries[0].isIntersecting) {
+  //       // Когда последний элемент появляется в поле зрения, загружаем новые данные
+  //       callbacks.load()
+  //     }
+  //   });
+  //   if (node) observer.current.observe(node); // Запуск наблюдения за последним элементом
+  // }, []);
+
+
+  const handleScroll = (e) => {
+    const bottom = e.target.scrollHeight === e.target.scrollTop + e.target.clientHeight;
+    if (bottom) {
+      callbacks.load()
+    }
   };
 
 
@@ -86,7 +115,7 @@ function SelectCustom({stateNameCatalog = 'catalog', stateNameCategories = 'cate
                   placeholder={'Поиск'}
                   theme={'med'}
               />
-              <ListCountry list={select.countries}  load={callbacks.load} renderItem={renders.item} />
+              <ListCountry list={options.countries}  scroll={handleScroll} renderItem={renders.item} />
           </>
         }
       </OptionCountry>

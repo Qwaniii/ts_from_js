@@ -4,7 +4,6 @@
     font-size: 16px;
     padding: 3px 2px 2px;  
     border: 1px solid black;
-    z-index: 2;
     background-color: white;;
 
 
@@ -34,17 +33,13 @@
 
 .OptionCountry-child {
     width: 240px;
-    max-height: 200px;
     position: absolute;
-    box-sizing:border-box;
+
     top: 25px;
     left: 0;
     background-color: white;
-    overflow-y: auto;
-    overflow-x:hidden;
     transition: all .3s;
     box-shadow: 1px 1px 10px 0px gray;
-    z-index: 1;
 }
 
 .OptionCountry-wrapper {
