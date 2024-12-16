@@ -20,14 +20,18 @@ function ChatPage({}) {
   }))
 
   const callbacks = {
-    send: useCallback((text) => store.actions.socket.send(text), [store])
+    send: useCallback((text) => store.actions.socket.send(text, select.user), [store]),
+    edit: useCallback((newText, id) => store.actions.socket.send(newText, id), [store]),
   }
 
   useEffect(() => {
     const res  = store.actions.socket.newSocket(select.token)
-    setTimeout(() => store.actions.socket.getAllMessages(), 1000)
     return () => store.actions.socket.close()
   },[])
+
+  useEffect(() => {
+    if(select.auth) store.actions.socket.getAllMessages()
+  },[select.auth])
 
   const renders = {
      message: useCallback(

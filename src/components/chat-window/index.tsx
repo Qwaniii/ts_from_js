@@ -22,14 +22,14 @@ function ChatWindow({ allMessages, renderItem}) {
   const cn = bem('ChatWindow');
 
   return (
-    <div className={cn()}>
-      {allMessages.map(item => (
-        <div key={item._id}>
-          {renderItem(item)}
-        </div>
-        ))}
-    <div ref={scrollDown}>©</div>
-    </div >
+    <ul className={cn()}>
+        {allMessages.map(item => (
+          <li key={item._id}>
+            {renderItem(item)}
+          </li>
+          ))}
+      <div ref={scrollDown}></div>
+    </ul >
   )
 }
 

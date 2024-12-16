@@ -16,14 +16,15 @@ function ItemChat({ message, user, confirm, link }) {
   const idUserMes = message.author._id
 
   return (
-    <ul className={cn()}>
-      <li className={cn('text', message.author._id === user._id ? 'author' : '')}>
-        {message.author._id === user._id && <div className={cn('confirm')}>{confirmed ? '✔️' : '⏳'}</div>}
+    <div className={cn()}>
+      <div className={cn('text', message.author._id === user._id ? 'author' : '')}>
+        {message.author._id === user._id && <div className={cn('confirm')}>{message.confirmed ? '✔️' : '⏳'}</div>}
         <Link to={link} className={cn('user')} style={{color: `#1a${idUserMes[idUserMes.length - 1]}122`}}>{idUserMes === user._id ? user.username : message.author.username}</Link>
         <div>{message.text}</div>
         <div className={cn('time')}>{date.toLocaleDateString('ru-Ru', { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' })}</div>
-      </li>
-    </ul>
+        {message.author._id === user._id && <div className={cn('edit')}>✏️</div>}
+      </div>
+    </div>
   )
 }
 

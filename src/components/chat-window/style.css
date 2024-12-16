@@ -5,4 +5,9 @@
   border: 1px solid black;
   background-color: rgba(119, 136, 153, 0.2);
   overflow-y: auto;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
 }

@@ -47,16 +47,9 @@ class WebSock extends StoreModule {
           }
         }))
 
-        if(this.getState().auth) {
-          socket.send(JSON.stringify({
-          method: 'last',
-          payload: {
-            fromDate: '2024-12-04T09:56:18.109Z'
-          }
-        }))
-      }
-
+        // this.getAllMessages()
       }    
+
 
 
       socket.onmessage = (event) => {
@@ -70,18 +63,20 @@ class WebSock extends StoreModule {
             })
           break;
           case 'last':
+            const allMessages = mes.payload.items.map(item => Object.assign({confirmed: true}, item))
             this.setState({
               ...this.getState(),
-              messages: [...mes.payload.items.map(item => [...{...item, confirmed: true}])]
+              messages: allMessages
             })
           break;
           case 'post':
-            const delivery = this.getState().deliveredMes.find(item => item.key === mes.payload._key)
+            const delivery = this.getState().deliveredMes.find(item => item._key === mes.payload._key)
             this.setState({
               ...this.getState(),
-              messages: [...this.getState().messages, mes.payload],
+              messages: delivery ? [...this.getState().messages, {...mes.payload, confirmed: true}] : [...this.getState().messages, mes.payload],
               deliveredMes: delivery ? [...this.getState().deliveredMes.filter(item => item.key !== mes.payload._key), {...delivery, confirmed: true}] : [...this.getState().deliveredMes]
             })
+          break;
         }
       }
 
@@ -120,17 +115,20 @@ class WebSock extends StoreModule {
     // }
 
     getAllMessages() {
-      this.getState().socket.send(JSON.stringify({
-        method: 'last',
-        payload: {
-          fromDate: '2024-12-04T09:56:18.109Z'
-        }
-      }))
+      if(this.getState().auth) {
+
+        this.getState().socket.send(JSON.stringify({
+          method: 'last',
+          payload: {
+            fromDate: '2024-12-04T09:56:18.109Z'
+          }
+        }))
+      }
     }
 
 
 
-    send(message) {
+    send(message, author) {
       if(!message) {
         alert('Введите сообщение')
       } else {
@@ -146,10 +144,26 @@ class WebSock extends StoreModule {
         this.setState({
           ...this.getState(),
           deliveredMes: [...this.getState().deliveredMes, 
-            {message, key}
+            {message, _key: key, author},
           ]
         })
       }
+    }
+
+    edit(newMessage, idMessage) {
+      this.getState().socket.send(JSON.stringify({
+        method: 'put',
+        payload: {
+          id: idMessage,
+          text: newMessage
+        }
+      }))
+      // this.setState({
+      //   ...this.getState(),
+      //   deliveredMes: [...this.getState().deliveredMes, 
+      //     {message, _key: key, author},
+      //   ]
+      // })
     }
 
     close() {
