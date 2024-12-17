@@ -32,6 +32,7 @@ class WebSock extends StoreModule {
 
     const socket =  this.services.websocket.socketUrl();
 
+
       socket.onopen = (e) => {
         console.log(e)
         console.log('socket is open, auth - true ')
@@ -86,34 +87,6 @@ class WebSock extends StoreModule {
       }
   }
 
-  //   auth(Xtoken) {
-  //     // const socket =  this.services.websocket.socketUrl();
-  //     this.getState().socket.onopen = (e) => {
-  //       this.getState().socket.send(JSON.stringify({
-  //         method: 'auth',
-  //         payload: {
-  //           token: Xtoken
-  //         }
-  //       }))
-
-  //   }
-  // }
-
-    // getMessage() {
-    //   let mes = ''
-    //   this.getState().socket.message = function(event) {
-    //     let message = JSON.parse(event.data);
-    //     let res = message.payload.text
-    //     mes = res
-    //     return mes
-    //   }
-    //   this.setState({
-    //     ...this.getState(),
-    //     message: mes
-    //   })
-    //   console.log(mes)
-    // }
-
     getAllMessages() {
       if(this.getState().auth) {
 
@@ -167,11 +140,13 @@ class WebSock extends StoreModule {
     }
 
     close() {
-      this.getState().socket.close()
-      this.setState({
-        ...this.getState(),
-        Xsocket: {}
-      })
+      this.getState().socket.onclose = () => {
+        console.log('WebSokcet is closed')
+        this.setState({
+          ...this.getState(),
+          Xsocket: {}
+        })
+      }
     }
 
   

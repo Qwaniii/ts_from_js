@@ -1,4 +1,4 @@
-class Websocket {
+class Socket {
   services: any
   config: any
 
@@ -13,10 +13,11 @@ class Websocket {
 
   socketUrl() {
     const socket =  new WebSocket(this.config.baseSocketUrl);
+    
     return socket;
   }
 
 
 }
 
-export default Websocket;
+export default Socket;
