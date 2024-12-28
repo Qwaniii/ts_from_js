@@ -21,7 +21,7 @@ function Profile() {
 
   useInit(() => {
     store.actions.profile.load(params.id);
-  }, [params.id]);
+  }, [params.id], false, `Main:profile:${params.id}`);
 
   const select = useSelector(state => ({
     profile: state.profile.data,

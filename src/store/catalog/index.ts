@@ -50,8 +50,7 @@ class CatalogState extends StoreModule {
    * @return {Promise<void>}
    */
   async initParams(newParams: object = {}): Promise<void> {
-    if (process.env.IS_WEB) {
-      const urlParams = new URLSearchParams(window.location.search);
+      const urlParams = new URLSearchParams(process.env.IS_WEB ? window.location.search : '');
       let validParams: any = {};
       
       if (this.config.saveParams) {
@@ -65,7 +64,7 @@ class CatalogState extends StoreModule {
       }
   
       await this.setParams({...this.initState().params, ...validParams, ...newParams}, true);
-    }
+    
   }
 
   /**

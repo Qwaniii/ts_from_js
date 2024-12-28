@@ -9,13 +9,14 @@ import { Provider } from 'react-redux';
 
 export default async (params) => {
 
+
   const services = new Services(config);
   
   const jsx = (
     <Provider store={services.redux}>
       <ServicesContext.Provider value={services}>
         <I18nProvider>
-          <MemoryRouter>
+          <MemoryRouter initialEntries={[params.url]}>
             <App />
           </MemoryRouter>
         </I18nProvider>
@@ -23,15 +24,16 @@ export default async (params) => {
     </Provider>
   )
   
-   const html = renderToString(jsx)
+   const htmlDraft = renderToString(jsx)
 
-  await Promise.all([
-    services.ssr.promises
-  ])
+  await Promise.all(services.ssr.promises)
 
-  const html2 = renderToString(jsx)
+  const html = renderToString(jsx)
 
 
-  return { html }
+  return { html,
+    store: services.store.getState(),
+    inits: services.ssr.names
+   }
 
 }

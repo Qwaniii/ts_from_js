@@ -11,6 +11,7 @@ import Profile from './profile';
 import Protected from '../containers/protected';
 import Modals from "../containers/modals";
 import Chat from './chat';
+import NoSSR from '../containers/no-ssr';
 
 
 /**
@@ -23,7 +24,7 @@ import Chat from './chat';
   
    useInit(async () => {
      await store.actions.session.remind();
-  });
+  },  [], false, 'Main:session:remind');
 
   return (
     <>
@@ -34,9 +35,11 @@ import Chat from './chat';
         <Route
           path={'/profile/:id'}
           element={
-            <Protected redirect="/login">
-              <Profile />
-            </Protected>
+            <NoSSR>
+              <Protected redirect="/login">
+                <Profile />
+              </Protected>
+            </NoSSR>
           }
         />
         <Route

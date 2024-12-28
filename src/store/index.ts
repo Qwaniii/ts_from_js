@@ -83,7 +83,7 @@ class Store {
     const moduleConfig  = {...(this.config?.modules[newName] || {} ) , ...options} ;
 
     this.actions[newName] = new modules[baseState](this, newName, moduleConfig) as StoreActions[K];
-    this.state[newName] = this.actions[newName].initState() as StoreState[K];
+    this.state[newName] = this.state[newName] || this.actions[newName].initState() as StoreState[K];
   }
 
   destroy(name: string) {

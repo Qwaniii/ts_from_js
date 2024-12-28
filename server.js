@@ -15,9 +15,9 @@ app.use('/api/v1', proxy('query.rest', {
 
 app.use(express.static(path.resolve(__dirname, './dist/web'), { index: false }), );
 
-app.get('*', function(request, response) {
+app.get('*', async function(request, response) {
 
-    const result = Root();
+    const result = await Root({url: request.url});
 
     response.status(200).send(`
         <!doctype html>
@@ -28,6 +28,8 @@ app.get('*', function(request, response) {
                     <base href='/'>
                     <script defer='defer' src='main.js'></script>
                     <link href='main.css' rel='stylesheet'>
+                    <script>window.STORE = '${JSON.stringify(result.store)}'</script>
+                    <script>window.INITS = '${JSON.stringify(result.inits)}'</script>
                 </head>
                 <body>
                     <div id="root">${result.html}</div>
@@ -37,4 +39,4 @@ app.get('*', function(request, response) {
 })
 
 
-app.listen(3000)
+app.listen(3001)

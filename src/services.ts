@@ -4,6 +4,13 @@ import SSRService from './ssr';
 import Store from './store';
 import createStoreRedux from './store-redux';
 
+declare global {
+  interface Window { 
+    STORE: any; 
+    INITS: any;
+  }
+}
+
 export type KeyModulesConfig = keyof ModulesConfig | string
 
 export type ModulesConfig = {
@@ -63,7 +70,10 @@ class Services {
    */
   get store(): Store {
     if (!this._store) {
-      this._store = new Store(this, this.config.store);
+
+      const initState = process.env.IS_WEB ? window.STORE ? JSON.parse(window.STORE) : undefined : undefined
+
+      this._store = new Store(this, this.config.store, initState);
     }
     return this._store;
   }
@@ -89,7 +99,8 @@ class Services {
 
   get ssr() {
     if(!this._ssr) {
-      this._ssr = new SSRService(this, this.config.ssr)
+      const names = process.env.IS_WEB ? window.INITS ? JSON.parse(window.INITS) : undefined : undefined
+      this._ssr = new SSRService(this, this.config.ssr, names)
     }
     return this._ssr
   }

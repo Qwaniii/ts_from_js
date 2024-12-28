@@ -30,8 +30,7 @@ import { useSsrEffect } from '@issr/core';
           store.actions.categories.load(),
         ]);
     },
-    [],
-    true,
+    [], true, 'Main:catalog:categories',
   );
 
   const { t } = useTranslate();

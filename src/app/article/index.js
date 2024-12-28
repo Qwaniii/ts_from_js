@@ -10,22 +10,27 @@ import Spinner from '../../components/spinner';
 import ArticleCard from '../../components/article-card';
 import LocaleSelect from '../../containers/locale-select';
 import TopHead from '../../containers/top-head';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import shallowequal from 'shallowequal';
 import articleActions from '../../store-redux/article/actions';
+import useSelector from '../../hooks/use-selector';
 
 function Article() {
   const store = useStore();
 
-  const dispatch = useDispatch();
+
   // Параметры из пути /articles/:id
 
   const params = useParams();
 
-  useInit(() => {
-    //store.actions.article.load(params.id);
-    dispatch(articleActions.load(params.id));
-  }, [params.id]);
+  useInit(async () => {
+    await store.actions.article.load(params.id);
+
+
+    // await new Promise(resolve => {
+  //   dispatch(articleActions.load(params.id, resolve))
+  // });
+  }, [params.id], false, 'article:load');
 
   const select = useSelector(
     state => ({
